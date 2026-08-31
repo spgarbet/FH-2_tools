@@ -3250,34 +3250,51 @@ function onMIDISuccess(midiAccess) {
     onStateChange(null);
 }
 function onStateChange(e) {
-    var str = "";
-    var fh2 = -1;
+  var inputSelector  = document.getElementById("midiinput");
+  var outputSelector = document.getElementById("midioutput");
+  var selectedInput  = inputSelector.value;
+  var selectedOutput = outputSelector.value;
+  
+  var str            = "";
+  var inputs         = midi.inputs.values();
+  for ( var input = inputs.next(); input && !input.done; input = inputs.next() ) {
+    str += "<option value='" + input.value.id + "'>" + input.value.name + "</option>";
+  }
+  inputSelector.innerHTML = str;
+  if (midi.inputs.get(selectedInput)) {
+    inputSelector.value = selectedInput;
+  }
+  else {
     var inputs = midi.inputs.values();
-    for ( var input = inputs.next(); input && !input.done; input = inputs.next() ) {
-	    str += "<option value='" + input.value.id + "'>" + input.value.name + "</option>";
-	    if ( input.value.name == fh2InPortName ) {
-		    fh2 = input.value.id;
-	    }
-    }
-    document.getElementById( "midiinput" ).innerHTML = str
-    if ( fh2 != -1 ) {
-	    document.getElementById( "midiinput" ).value = fh2;
-    }
-    str = "";
-    fh2 = -1;
-    var outputs = midi.outputs.values();
-    for ( var output = outputs.next(); output && !output.done; output = outputs.next() ) {
-	    str += "<option value='" + output.value.id + "'>" + output.value.name + "</option>";
-	    if ( output.value.name == fh2OutPortName ) {
-		    fh2 = output.value.id;
-			midi.outputs.get( output.value.id ).send( [ 0xFE ] );
-	    }
-    }
-    document.getElementById( "midioutput" ).innerHTML = str
-    if ( fh2 != -1 ) {
-	    document.getElementById( "midioutput" ).value = fh2;
-    }
 
+    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+      if (input.value.name.startsWith("FH-2")) {
+        inputSelector.value = input.value.id;
+        break;
+      }
+    }
+  }
+  
+  str                = "";
+  var outputs        = midi.outputs.values();
+  for ( var output = outputs.next(); output && !output.done; output = outputs.next() ) {
+    str += "<option value='" + output.value.id + "'>" + output.value.name + "</option>";
+  }
+  outputSelector.innerHTML = str;
+
+  if (midi.outputs.get(selectedOutput)) {
+    outputSelector.value = selectedOutput;
+  } 
+  else {
+    var outputs = midi.outputs.values();
+
+    for (var output = outputs.next(); output && !output.done; output = outputs.next()) {
+      if (output.value.name.startsWith("FH-2")) {
+        outputSelector.value = output.value.id;
+        break;
+      }
+    }
+  }
 	setup_onmidimessage();
 }
 function onMIDIFailure(e) {
@@ -3413,26 +3430,6 @@ function prepareSaveConfig() {
 }
 function makeDownloadInvalid() {
 	document.getElementById( 'saveConfig' ).style.display = "none";
-}
-
-const fh2MIDIInKey = "fh2MIDIInKey";
-const fh2MIDIOutKey = "fh2MIDIOutKey";
-const defaultFH2PortName = "FH-2";
-var fh2InPortName = defaultFH2PortName;
-var fh2OutPortName = defaultFH2PortName;
-
-if(!localStorage.getItem(fh2MIDIInKey)) {  // No input stored
-    localStorage.setItem(fh2MIDIInKey, defaultFH2PortName);
-} 
-else {
-    fh2InPortName = localStorage.getItem(fh2MIDIInKey);
-}
-
-if(!localStorage.getItem(fh2MIDIOutKey)) {  // No output stored
-    localStorage.setItem(fh2MIDIOutKey, defaultFH2PortName);
-} 
-else {
-    fh2OutPortName = localStorage.getItem(fh2MIDIOutKey);
 }
 
 const themeKey = 'fh2Theme';
