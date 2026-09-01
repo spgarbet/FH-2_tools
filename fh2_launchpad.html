@@ -528,26 +528,6 @@ function reqVersion() {
 	dumpSysex( arr, "txSysex", dd+"\n" );
 }
 
-const fh2MIDIInKey = "fh2MIDIInKey";
-const fh2MIDIOutKey = "fh2MIDIOutKey";
-const defaultFH2PortName = "FH-2";
-var fh2InPortName = defaultFH2PortName;
-var fh2OutPortName = defaultFH2PortName;
-
-if(!localStorage.getItem(fh2MIDIInKey)) {  // No input stored
-    localStorage.setItem(fh2MIDIInKey, defaultFH2PortName);
-} 
-else {
-    fh2InPortName = localStorage.getItem(fh2MIDIInKey);
-}
-
-if(!localStorage.getItem(fh2MIDIOutKey)) {  // No output stored
-    localStorage.setItem(fh2MIDIOutKey, defaultFH2PortName);
-} 
-else {
-    fh2OutPortName = localStorage.getItem(fh2MIDIOutKey);
-}
-
 const themeKey = 'fh2Theme';
 if ( localStorage.getItem( themeKey ) ) {
 	if ( localStorage.getItem( themeKey ) == 1 ) {
