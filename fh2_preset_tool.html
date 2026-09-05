@@ -1432,7 +1432,7 @@ function changeInput() {
 	setup_onmidimessage();
 	// Save the current port settings
 	let inputSelector = document.getElementById("midiinput");
-	if (inputsSelector.selectedIndex >= 0) {
+	if (inputSelector.selectedIndex >= 0) {
 	  fh2InPortName = inputSelector.options[inputSelector.selectedIndex].text;
     localStorage.setItem(fh2MIDIInKey, fh2InPortName);
 	}
