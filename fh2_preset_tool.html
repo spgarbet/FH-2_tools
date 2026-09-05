@@ -1389,6 +1389,7 @@ function onStateChange(e) {
     str += "<option value='" + output.value.id + "'>" + output.value.name + "</option>";
   }
   outputSelector.innerHTML = str;
+  var outputFound          = false;
 
   // Does the selected output match last selection?
   for(var i=0; i<outputSelector.options.length; ++i) {
